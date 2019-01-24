@@ -2,40 +2,54 @@
 #include <algorithm>
 
 using namespace std;
-
-void vrati(int polje[], int n) {
-	int poljeklon[7];
-	int index = 0;
-
+int* ptojed=nullptr;
+int* poljeklon(int polje[],int n) {
+	int* poljeklon = new int[n];
 	for (int i = 0; i < n; i++)
 	{
 		poljeklon[i] = count(polje, polje + 7, polje[i]);
 	}
+	return poljeklon;
+}
 
-	int jed = count(poljeklon, poljeklon + 7, 1);
-	int* novo = new int[jed];
+int* brojjed(int polje[]) {
+	int* broj = new int;
+		*broj = count(polje, polje + 7, 1);
+	return broj;
+}
+
+int* vrati(int polje[], int n) {
+	
+	int index = 0;
+
+	int* klon = poljeklon(polje, n);
+	int* jed = brojjed(klon);
+	ptojed = jed;
+	int* novo = new int[*jed];
 
 	for (int i = 0; i < n; i++)
 	{
-
-		if (poljeklon[i] == 1) {
+		if (klon[i] == 1) {
 			novo[index++] = polje[i];
-			swap(polje[i], poljeklon[i]);
+			swap(polje[i], klon[i]);
 		}
 	}
-
-	for (int i = 0; i < jed; i++)
-	{
-		cout << novo[i] << endl;
-	}
-	delete[] novo;
+	delete[] klon;
+	return novo;
 }
 
 int main() {
 	int n = 7;
 	int polje[7] = {1,2,3,1,5,5,7};
 
-	vrati(polje, n);
-		
+	
+	int* novo = vrati(polje, n);
+	for (int i = 0; i < *ptojed; i++)
+	{
+		cout << novo[i] << endl;
+	}
+	delete[] novo;
+	delete ptojed;
+
 	return 0;
 }
